@@ -23,7 +23,7 @@ int main(){
             continue;
         }
 
-        if(isalpha(ch) || ch == '_'){
+        if(isalnum(ch) || ch == '_'){
             i = 0;
             token[i++] = ch;
             while((ch = fgetc(fp)) != EOF && (isalnum(ch) || ch == "_")){
@@ -35,6 +35,23 @@ int main(){
             }else{
                 printf("%s : Identifier\n", token);
             }
-        }else if(ch)
+        }else if(isdigit(ch)){
+            i = 0;
+            token[i++] = ch;
+            while((ch = fgetc(fp)) != EOF && isdigit(ch)){
+                token[i++] = ch;
+            }
+            token[i] = '\0';
+            if(ch != EOF){
+                ungetc(ch, fp);
+            }
+            printf("%s : Constant\n",token);
+        }else if(strchr("+-*/%<>=!^&|", ch)){
+            printf("%c : Operator\n",ch);
+        }else if(strchr(";:{}[]()#.", ch)){
+            printf("%c : Special symbol\n",ch);
+        }else{
+            printf("%c : Unknown symbol\n",ch);
+        }
     }
 }
